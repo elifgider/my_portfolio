@@ -1,0 +1,49 @@
+export const metadata = {
+  title: "AI ile Kombin Tamamlama",
+  description: "Yapay zekâ destekli kombin tamamlama uygulaması. Bu fikri, her sabah “ne giyeceğim?” sorusuna çözüm bulmak için bir arkadaşımla birlikte geliştirdik. Uygulama, yüklediğiniz kıyafet görselini analiz ederek yüklenen kıyafetin tarzına, kalınlığına göre eksik kombin parçalarını öneriyor. Şu anda geliştirme sürecindeyiz; yakında Play Store ve App Store’da yayınlamayı hedefliyoruz.",
+  date: "2025-09-20T10:00:00Z",
+  tags: ["Golang", "Flutter", "Fine-tuning", "Python", "Webscraping"],
+  image: "/projects/aikombin.jpg"
+}
+
+# 👗 AI ile Kombin Tamamlama
+
+**AI ile Kombin Tamamlama**, kullanıcıların eksik kombin parçalarını yapay zekâ ile tamamlamalarını sağlayan bir mobil uygulamadır.  
+Uygulama, kullanıcının yüklediği kıyafet görselini analiz ederek, görseldeki parça ile uyumlu yeni ürün önerileri sunar.  
+Bu sayede kullanıcı, tarzına uygun kombinleri kolayca oluşturabilir.
+
+---
+
+## 🧠 Teknoloji ve Yaklaşım
+
+Proje, **görüntü işleme**, **makine öğrenimi** ve **web scraping** tekniklerini bir arada kullanır.  
+Kıyafet verileri scraping yöntemiyle toplanır, görsel özelliklerine göre sınıflandırılır ve model bu verilerle eğitilir.  
+Model mimarisi olarak **VGG16** kullanılmış ve **transfer learning** yöntemiyle özelleştirilmiştir.  
+
+Uygulamanın arayüzü **Flutter** ile geliştirilmiş, backend tarafı **Golang** tabanlı API servisleriyle desteklenmiştir.  
+Kullanıcılarla etkileşimli öneriler sunmak için **GPT-3.5-turbo** tabanlı doğal dil işleme modülü entegre edilmiştir.
+
+---
+
+## 📲 Uygulama Özellikleri
+
+- Kullanıcı, kıyafet görseli yükleyerek eksik kombin parçalarını tamamlayabilir.  
+- Öneriler, tarz, renk ve kategori uyumuna göre dinamik olarak oluşturulur.  
+- Kombin önerileri görsel, ürün bilgisi ve bağlantı içeren kartlar halinde sunulur.  
+- Modern, sade ve kullanıcı dostu bir arayüz tasarımına sahiptir.
+
+---
+
+## 💡 Yenilikçi Yönler
+
+- Görüntü işleme teknikleriyle kıyafet analizi yapar.  
+- Ürün eşleşmelerini yalnızca veritabanına göre değil, **gerçek zamanlı analiz** ile üretir.  
+- Web scraping sayesinde sürekli güncellenen ürün önerileri sağlar.  
+- Kişiselleştirilmiş kombin önerileriyle alışveriş deneyimini geliştirir.
+
+---
+
+## 🎯 Sonuç
+
+Proje, kullanıcıların tarzına uygun kombinler oluşturmasını kolaylaştıran yenilikçi bir yapay zekâ çözümüdür.  
+Hem günlük kullanım hem de moda sektöründe kişisel öneri sistemleri için referans bir model oluşturmayı hedefler.

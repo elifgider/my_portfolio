@@ -1,0 +1,197 @@
+<div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 my-8 mb-9 shadow-sm">
+  <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-2">SNMP Temelleri ve Pratik İzleme</h1>
+  <p className="text-zinc-600 mb-4">Ağ cihazlarının izlenmesi ve yönetilmesi için kullanılan SNMP protokolünün temel bileşenlerini ve pratik kullanımını öğrenin.</p>
+  
+  <div className="text-sm text-zinc-600 space-y-1">
+    <div className="flex items-center gap-2">
+      <span className="font-medium">Elif Gider</span>
+      <span>—</span>
+      <span>6am Ekim 2025</span>
+    </div>
+    <div className="flex flex-wrap gap-2 mt-2">
+      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">#SNMP</span>
+      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">#ağ</span>
+      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium">#izleme</span>
+      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">#golang</span>
+      <span className="bg-pink-100 text-pink-800 px-2 py-1 rounded text-xs font-medium">#network</span>
+    </div>
+  </div>
+</div>
+
+## SNMP Temelleri ve Pratik İzleme
+
+SNMP (Simple Network Management Protocol), ağ cihazlarının izlenmesi ve yönetilmesi için kullanılan en yaygın protokollerden biridir. Yönlendiricilerden (router), anahtarlara (switch), sunuculardan sensörlere kadar birçok cihaz SNMP desteği sağlar. Bu yazıda, SNMP'nin temel bileşenlerini, nasıl çalıştığını ve pratik izleme senaryolarını ele alacağız.
+
+---
+
+## 🔍 SNMP Nedir?
+
+SNMP, **ağ cihazlarının durumunu sorgulamak, ölçüm yapmak ve gerektiğinde konfigürasyon değişiklikleri uygulamak** için kullanılan bir iletişim protokolüdür.  
+Basitçe söylemek gerekirse, SNMP sayesinde ağ yöneticileri cihazlardan bilgi alabilir veya belirli parametreleri uzaktan yönetebilir.
+
+### SNMP'nin Temel Bileşenleri
+
+SNMP sistemi dört ana bileşenden oluşur:
+
+**Manager (Yönetici):** SNMP sorgularını gönderen ve yanıtları toplayan sistemdir. Bu, Zabbix, PRTG, Nagios gibi izleme yazılımları veya sizin geliştirdiğiniz Go tabanlı uygulamalar olabilir.
+
+**Agent (Ajan):** Cihaz üzerinde çalışan ve belirli bilgileri SNMP üzerinden paylaşan yazılımdır. Örneğin bir switch üzerinde çalışan `snmpd` servisi.
+
+**MIB (Management Information Base):** SNMP tarafından erişilebilen tüm veri noktalarının tanımlarını içeren bir veri sözlüğüdür. Bu sayede hangi bilgilerin nasıl alınacağı tanımlanır.
+
+**OID (Object Identifier):** Her bir veri noktasını benzersiz olarak tanımlayan kimliktir. Örneğin `.1.3.6.1.2.1.2.2.1.10` portun RX trafiğini temsil eder.
+
+---
+
+## ⚙️ SNMP Versiyonları
+
+SNMP'nin üç temel versiyonu bulunur:
+
+**SNMP v1:** İlk sürüm olan v1, temel sorgulama ve yanıt mekanizması sağlar. Ancak güvenlik açısından en zayıf versiyondur çünkü şifreleme desteği bulunmaz.
+
+**SNMP v2c:** En yaygın kullanılan versiyondur. v1'e göre daha fazla veri tipi desteği ve toplu sorgular (bulk operations) sunar. Community string ile basit erişim kontrolü sağlar.
+
+**SNMP v3:** En güvenli versiyondur. Kimlik doğrulama (authentication) ve şifreleme (encryption) desteği sunar. Güvenlik kritik ortamlarda tercih edilir.
+
+Günümüzde **SNMP v2c** genellikle dahili ağlarda kullanılırken, **v3** daha güvenli ortamlarda tercih edilir.
+
+---
+
+## 🧩 OID ve MIB Kavramı
+
+Bir cihazdaki her bilgi bir **OID (Object Identifier)** ile temsil edilir.  
+Örneğin:
+.1.3.6.1.2.1.1.3.0   →   Cihazın uptime değeri
+.1.3.6.1.2.1.2.2.1.10 →   Bir arayüzün gelen trafiği (RX)
+.1.3.6.1.2.1.2.2.1.16 →   Bir arayüzün giden trafiği (TX)
+
+Bu OID'ler, **MIB dosyalarında** anlamlı isimlerle tanımlanır:
+IF-MIB::ifInOctets
+IF-MIB::ifOutOctets
+
+Bu sayede karmaşık sayılardan ziyade anlamlı isimlerle çalışabilirsiniz.
+
+---
+
+## 🧠 Pratik İzleme Senaryosu
+
+Bir ağ yöneticisi olarak, örneğin bir switch üzerindeki port trafiğini izlemek isteyebilirsiniz.  
+Bunu SNMP ile yapmak oldukça basittir:
+
+### Örnek: Switch Port Trafiğini İzleme
+
+#### 1️⃣ RX Trafiğini Sorgulama
+
+```bash
+snmpget -v2c -c public 192.168.1.10 IF-MIB::ifInOctets.2
+```
+
+•	-v2c: SNMP versiyonu
+•	-c public: community string
+•	192.168.1.10: cihaz IP adresi
+•	IF-MIB::ifInOctets.2: 2. portun gelen trafiği
+  
+
+#### 2️⃣ TX Trafiğini Sorgulama
+
+```bash
+snmpget -v2c -c public 192.168.1.10 IF-MIB::ifOutOctets.2
+```
+Bu komutlardan elde edilen değerler byte cinsindendir ve zaman farkına bölünerek bitrate (örneğin kbit/s) hesaplanabilir.
+
+📈 Gerçek Zamanlı İzleme Örneği
+SNMP verileri genellikle her polling interval (örneğin 60 saniye) aralığında sorgulanır.
+Bu veriler zaman serisi veritabanlarına (örneğin InfluxDB) kaydedilerek grafiğe dönüştürülebilir.
+```bash
+RX: 245823424 bytes (önceki ölçüm)
+RX: 245933424 bytes (60 saniye sonra)
+Fark: 110000 bytes / 60s = 1833 bytes/s ≈ 14.66 kbit/s
+```
+Bu şekilde her portun anlık trafiği hesaplanabilir.
+
+## 🧪 SNMP ile Go Dilinde Basit Sorgu
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/gosnmp/gosnmp"
+    "time"
+)
+
+func main() {
+    g := &gosnmp.GoSNMP{
+        Target:    "192.168.1.10",
+        Port:      161,
+        Community: "public",
+        Version:   gosnmp.Version2c,
+        Timeout:   time.Duration(2) * time.Second,
+    }
+
+    err := g.Connect()
+    if err != nil {
+        panic(err)
+    }
+    defer g.Conn.Close()
+
+    oid := "1.3.6.1.2.1.1.3.0"
+    result, err := g.Get([]string{oid})
+    if err != nil {
+        panic(err)
+    }
+
+    for _, variable := range result.Variables {
+        fmt.Printf("Cihaz Uptime: %v\n", variable.Value)
+    }
+}
+```
+
+## 🔒 Güvenlik ve En İyi Uygulamalar
+
+•	SNMP portu (UDP 161) sadece güvenilir ağlarda erişilebilir olmalıdır.
+•	community string bilgisi gizli tutulmalıdır (örnek: public yerine NetMon2025!).
+•	SNMPv3 tercih edilerek şifreleme kullanılmalıdır.
+•	Gereksiz OID erişimlerine izin verilmemelidir.
+  
+## 🚀 Sonuç
+
+SNMP, doğru yapılandırıldığında ağ yönetiminin vazgeçilmez bir parçasıdır.
+Basit sorgularla cihaz sağlığı, port trafiği, CPU/disk kullanımı gibi metrikler kolayca izlenebilir.
+Günümüzde Go, Python veya Grafana/InfluxDB entegrasyonları ile SNMP verileri görselleştirilebilir ve proaktif ağ yönetimi sağlanabilir.
+
+---
+
+## 📱 Bu Yazıyı Paylaş
+
+Bu yazıyı beğendiyseniz, arkadaşlarınızla paylaşabilirsiniz:
+
+<div className="flex gap-3 justify-start my-8">
+  <a 
+    href="https://www.facebook.com/sharer/sharer.php?u=https://elifgider.dev/blog/snmp-temelleri-ve-pratik-izleme" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">f</span> <span className="text-white">Facebook</span>
+  </a>
+  
+  <a 
+    href="https://twitter.com/intent/tweet?url=https://elifgider.dev/blog/snmp-temelleri-ve-pratik-izleme&text=SNMP Temelleri ve Pratik İzleme" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">𝕏</span> <span className="text-white">Twitter</span>
+  </a>
+  
+  <a 
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https://elifgider.dev/blog/snmp-temelleri-ve-pratik-izleme" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+    style={{backgroundColor: '#0177B5'}}
+  >
+    <span className="text-white">in</span> <span className="text-white">LinkedIn</span>
+  </a>
+</div>

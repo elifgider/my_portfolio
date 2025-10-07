@@ -1,0 +1,166 @@
+<div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 my-8 mb-9 shadow-sm">
+  <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-2">NPX İle Kişisel Kartvizit Paketi Nasıl Yapılır?</h1>
+  <p className="text-zinc-600 mb-4">Terminal'de `npx paket-adi` yazarak çalışan kişisel kartvizit paketlerinin nasıl oluşturulacağını öğrenin.</p>
+  
+  <div className="text-sm text-zinc-600 space-y-1">
+    <div className="flex items-center gap-2">
+      <span className="font-medium">Elif Gider</span>
+      <span>—</span>
+      <span>5 Ekim 2025</span>
+    </div>
+    <div className="flex flex-wrap gap-2 mt-2">
+      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">#npx</span>
+      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">#npm</span>
+      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium">#cli</span>
+      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">#javascript</span>
+      <span className="bg-pink-100 text-pink-800 px-2 py-1 rounded text-xs font-medium">#kartvizit</span>
+    </div>
+  </div>
+</div>
+
+## NPX İle Kişisel Kartvizit Paketi Nasıl Yapılır
+Terminal'de `npx elif` yazıp Enter'a bastığınızda benim kartvizitim çıkıyor! Eğer bu havalıysa ve siz de kendi npx paketinizi yapmak istiyorsanız, bu yazı tam size göre! 🚀
+
+---
+
+## 🛠️ Adım 1: Proje Oluşturma
+
+```bash
+mkdir my-card
+cd my-card
+npm init -y
+```
+
+---
+
+## 📦 Adım 2: Package.json Düzenleme
+
+`package.json` dosyasını açıp şu değişiklikleri yapın:
+
+```json
+{
+  "name": "my-card",
+  "version": "1.0.0",
+  "description": "Kişisel npx kartviziti",
+  "main": "index.js",
+  "bin": {
+    "my-card": "./index.js"
+  },
+  "keywords": ["cli", "npx", "kartvizit"],
+  "author": "Your Name",
+  "license": "MIT"
+}
+```
+
+**Önemli:** `bin` field'i hangi dosyanın çalıştırılacağını belirtir.
+
+---
+
+## 🚀 Adım 3: Ana Dosya Oluşturma
+
+`index.js` dosyasını oluşturun:
+
+```javascript
+#!/usr/bin/env node
+
+console.log(`
+╔══════════════════════════════════════╗
+║                                      ║
+║  Your Name                           ║
+║  Your Title                          ║
+║                                      ║
+║  📧 your@email.com                   ║
+║  🐙 github.com/yourusername          ║
+║  💼 linkedin.com/in/yourusername     ║
+║  🌐 yourwebsite.com                  ║
+║                                      ║
+║  Kartvizit: npx my-card              ║
+║                                      ║
+╚══════════════════════════════════════╝
+`);
+
+console.log('Merhaba! Ben [Your Name]. [Your Title] olarak çalışıyorum.');
+```
+
+**Dosyanın başındaki `#!/usr/bin/env node` çok önemli!**
+
+---
+
+## 🔧 Adım 4: Çalıştırılabilir Yapma
+
+```bash
+chmod +x index.js
+```
+
+---
+
+## 🧪 Adım 5: Test
+
+```bash
+node index.js
+```
+
+---
+
+## 📤 Adım 6: NPM'e Yayınlama
+
+```bash
+npm login
+npm publish
+```
+
+---
+
+## 🎉 Tamamlandı!
+
+Artık dünyanın her yerinden herkes şu komutu çalıştırabilir:
+
+```bash
+npx my-card
+```
+
+---
+
+## 💡 İpuçları
+
+- Paket adı benzersiz olmalı
+- `package.json`'da `bin` field'ini unutmayın
+- `#!/usr/bin/env node` ile dosyayı başlatın
+- `chmod +x` ile çalıştırılabilir yapın
+
+---
+
+## 📱 Bu Yazıyı Paylaş
+
+Bu yazıyı beğendiyseniz, arkadaşlarınızla paylaşabilirsiniz:
+
+<div className="flex gap-3 justify-start my-8">
+  <a 
+    href="https://www.facebook.com/sharer/sharer.php?u=https://elifgider.dev/blog/npmde-paket-gelistirme-rehberi" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">f</span> <span className="text-white">Facebook</span>
+  </a>
+  
+  <a 
+    href="https://twitter.com/intent/tweet?url=https://elifgider.dev/blog/npmde-paket-gelistirme-rehberi&text=npx ile Kişisel Kartvizit Paketi Nasıl Yapılır?" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">𝕏</span> <span className="text-white">Twitter</span>
+  </a>
+  
+  <a 
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https://elifgider.dev/blog/npmde-paket-gelistirme-rehberi" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+    style={{backgroundColor: '#0177B5'}}
+  >
+    <span className="text-white">in</span> <span className="text-white">LinkedIn</span>
+  </a>
+</div>
+

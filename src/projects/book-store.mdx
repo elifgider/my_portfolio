@@ -1,0 +1,55 @@
+export const metadata = {
+  title: "Online Book Store API",
+  description:
+    "PHP ile geliştirilmiş RESTful API; kitapları listeleme, ekleme, güncelleme ve silme işlemlerini destekler.",
+  date: "2025-10-10T12:00:00Z",
+  tags: ["PHP", "REST API", "MySQL", "Docker", "Backend"],
+  image: "/projects/APIs.png"
+}
+
+# 📚 Online Book Store API
+
+**Online Book Store API**, kitap koleksiyonlarını yöneten CRUD işlemleri sağlayan bir RESTful servistir.  
+Bu proje, çapraz platform uygulamalarda kullanılmak üzere **PHP tabanlı API** altyapısı sunar.
+
+---
+
+## 🧩 Temel Özellikler
+
+- **Kitap listeleme**: Tüm kitapları veya belirli bir ID’ye göre getirme  
+- **Kitap ekleme / güncelleme / silme**: JSON formatında isteklerle veritabanı işlemleri  
+- **Swagger/OpenAPI dokümantasyonu** ile API endpoint’leri belgelendirilmiş  
+- **Docker & docker-compose** ile servis ve veri tabanı konfigürasyonu basit hale getirilmiş  
+- **Unit test desteği (PHPUnit)** ile güvenilir kod yapısı  
+
+---
+
+## 🛠️ Teknolojiler
+
+- PHP 8.x  
+- MySQL (veya ilişkisel veri tabanı)  
+- Docker & docker-compose  
+- Swagger / OpenAPI  
+- PHPUnit test çatısı  
+
+---
+
+## 🔁 Mimari ve Akış
+
+1. İstemci (web uygulaması, mobil uygulama veya Postman gibi) `/api/books` endpoint’ine GET isteği yapar.
+2. API, veri tabanından kitapları JSON olarak döner.
+3. POST ile kitap ekleme, PUT ile güncelleme, DELETE ile silme işlemleri yapılabilir.
+4. Her endpoint için giriş doğrulaması, hata yönetimi ve HTTP statü kodları sağlanmıştır.
+5. `docker-compose up` komutuyla tüm sistem ayarları otomatik çalışır.
+
+---
+
+## 📈 Neden Bu Proje?
+
+- Backend odaklı pratik yetkinlik kazandırır: REST, JSON, CRUD işlemleri, test, docker entegrasyonu  
+- Proje, başka frontend uygulamalarıyla (Next.js, React, Flutter gibi) kolayca entegre olabilir  
+- Basit ama tam işlevli API altyapısı sunarak portfolyona güçlü bir backend örneği ekler  
+
+---
+
+> 🔗 [GitHub Projesi](https://github.com/elifgider/book-store)  

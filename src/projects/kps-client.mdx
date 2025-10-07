@@ -1,0 +1,230 @@
+export const metadata = {
+  title: "KPS Client - NVİ Kimlik Doğrulama Paketi",
+  description:
+    "Türkiye Cumhuriyeti Nüfus ve Vatandaşlık İşleri (NVİ) KPS v2 servislerine sorgu yapmaya yarayan basit, bağımsız Go paketi.",
+  date: "2025-09-30T09:00:00Z",
+  tags: ["Golang", "SOAP", "XML", "API Integration", "Security", "KPS", "NVİ"],
+  image: "/projects/kimlik_dogrulama.png"
+}
+
+# 🪪 KPS Client - NVİ Kimlik Doğrulama Paketi
+
+**🔗 GitHub:** [github.com/netinternet/kpsclient](https://github.com/netinternet/kpsclient)
+
+Bu proje, **Türkiye Cumhuriyeti Nüfus ve Vatandaşlık İşleri (NVİ)** tarafından sunulan  
+**Kimlik Paylaşımı Sistemi (KPS) v2** servislerine sorgu yapmaya yarayan **basit, bağımsız bir Go paketi**dir.
+
+**⚠️ Önemli:** KPS servisi **herkese açık değildir**. Sadece **belirli nitelikteki kamu ve özel kuruluşlar** bu sisteme dahil olabilir ve **username/password** kimlik bilgileri gerektirir.
+
+Amaç, uygulamalarda T.C. kimlik numarası, ad-soyad ve doğum tarihi gibi bilgilerin **doğrulanmasını** güvenli şekilde sağlamaktır.
+
+---
+
+## 🚀 Öne Çıkan Özellikler
+
+- **STS (Token Service) ile kimlik doğrulama akışını otomatik olarak işler**
+- **HMAC-SHA1 ile SOAP mesajlarını imzalar** (KPS servisleriyle uyumlu olarak)
+- **SOAP cevabını parse edip anlamlı `Result` yapısını döndürür**
+- **Bağımsız, küçük ve kolay kullanılabilir API**
+
+---
+
+## 🧠 Genel Bakış
+
+KPS servisleri SOAP tabanlı çalıştığı için, bu istemci:
+
+1. **WS-Trust (STS) isteğini gerçekleştirir**
+2. **STS tarafından döndürülen SAML tabanlı anahtarla servise HMAC-SHA1 imzalı SOAP isteği gönderir**
+3. **Gelen yanıtı parse ederek daha kullanışlı bir Go yapısına dönüştürür**
+
+Proje; **kurum içi servisler**, **kamu API'leri**, veya **vatandaş doğrulama modülleri** gibi ortamlarda kolayca entegre edilebilir.
+
+---
+
+## 📦 Kurulum
+
+Go mod ile kullanmak için:
+
+```bash
+go get github.com/netinternet/kpsclient
+```
+
+veya doğrudan modunuzda:
+
+```go
+import kpsclient "github.com/netinternet/kpsclient"
+```
+
+---
+
+## 🚀 Hızlı Başlangıç
+
+```go
+package main
+
+import (
+    "context"
+    "time"
+    kpsclient "github.com/netinternet/kpsclient"
+)
+
+func example() {
+    client := kpsclient.New("KULLANICI_ADI", "PAROLA", nil)
+    req := kpsclient.QueryRequest{
+        TCNo:       "99999999999",
+        FirstName:  "JOHN",
+        LastName:   "DOE",
+        BirthYear:  "1990",
+        BirthMonth: "01",
+        BirthDay:   "01",
+    }
+    
+    ctx, cancel := context.WithTimeout(context.Background(), 40*time.Second)
+    defer cancel()
+    
+    res, err := client.DoQuery(ctx, req)
+    if err != nil {
+        // hata yönetimi
+    }
+    // res.Result yapısını kullan
+    _ = res
+}
+```
+
+---
+
+## ⚙️ API Özeti
+
+### Client Oluşturma
+```go
+func New(username, password string, httpClient *http.Client) *Client
+```
+- Yeni `Client` oluşturur
+- `httpClient` nil ise 30s timeout'lu varsayılan kullanılır
+
+### Sorgu Yapma
+```go
+func (c *Client) DoQuery(ctx context.Context, req QueryRequest) (Result, error)
+```
+- Verilen sorgu ile STS akışını yürütür
+- Servise imzalı isteği gönderir
+- Sonucu parse eder
+
+### Veri Yapıları
+
+**QueryRequest (Giriş):**
+- `TCNo` - T.C. Kimlik Numarası
+- `FirstName` - Ad
+- `LastName` - Soyad
+- `BirthYear` - Doğum Yılı
+- `BirthMonth` - Doğum Ayı
+- `BirthDay` - Doğum Günü
+
+**Result (Çıkış):**
+- `Status` (bool) - İşlem durumu
+- `Code` - 1: başarılı, 2: hatalı/bulunamadı, 3: ölüm
+- `Aciklama` - Açıklama metni
+- `Person` - `tc_vatandasi`, `yabanci`, `mavi`
+- `Extra` (map) - Ek bilgiler
+- `Raw` - Ham SOAP cevabı
+
+---
+
+## 🔐 Güvenlik Özellikleri
+
+- **WS-Security (UsernameToken)** standardına uygun authentication
+- **HMAC-SHA1 imzalama** (KPS servisleriyle uyumlu)
+- **UUID tabanlı request ID** üretimi
+- **Timestamp + Nonce** desteği
+- **XML Signature (ds:Signature)** desteği
+- **TLS** doğrulaması
+
+---
+
+## ⚠️ Güvenlik ve Notlar
+
+- **KPS servisi herkese açık değildir** - sadece yetkili kuruluşlar erişebilir
+- **Username/password kimlik bilgileri** NVİ tarafından verilir
+- Paket KPS servisleriyle uyum için **HMAC-SHA1** kullanır (STS tarafı gerekliliği)
+- Parolaları ve anahtarları güvenli şekilde saklayın
+- `.env` dosyaları üretimde uygun değildir
+- Gelen `Raw` alanı hata ayıklama amaçlıdır; gizli bilgi içerebilir
+
+---
+
+## 🧩 Akış Mantığı
+
+```go
+// 1. Client oluştur
+client := kpsclient.New("username", "password", nil)
+
+// 2. Sorgu hazırla
+req := kpsclient.QueryRequest{
+    TCNo:      "99999999999",
+    FirstName: "JOHN",
+    LastName:  "DOE",
+    BirthYear: "1990",
+}
+
+// 3. Sorguyu gönder
+ctx, cancel := context.WithTimeout(context.Background(), 40*time.Second)
+defer cancel()
+
+result, err := client.DoQuery(ctx, req)
+if err != nil {
+    log.Fatal(err)
+}
+
+// 4. Sonucu kullan
+if result.Status {
+    fmt.Printf("Kimlik doğrulandı: %s\n", result.Person)
+} else {
+    fmt.Printf("Hata: %s\n", result.Aciklama)
+}
+```
+
+---
+
+## 🎯 Kullanım Alanları
+
+- **Kurum İçi Servisler:** Şirket içi kimlik doğrulama
+- **Kamu API'leri:** Devlet kurumları için entegrasyon
+- **Vatandaş Doğrulama Modülleri:** E-ticaret, bankacılık
+- **Mikroservis Mimarisi:** Dağıtık sistemlerde kimlik doğrulama
+
+---
+
+## 📱 Bu Projeyi Paylaş
+
+Bu projeyi beğendiyseniz, arkadaşlarınızla paylaşabilirsiniz:
+
+<div className="flex gap-3 justify-start my-8">
+  <a 
+    href="https://www.facebook.com/sharer/sharer.php?u=https://elifgider.dev/projects/kps-client" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">f</span> <span className="text-white">Facebook</span>
+  </a>
+  
+  <a 
+    href="https://twitter.com/intent/tweet?url=https://elifgider.dev/projects/kps-client&text=KPS Client - NVİ Kimlik Doğrulama Paketi" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">𝕏</span> <span className="text-white">Twitter</span>
+  </a>
+  
+  <a 
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https://elifgider.dev/projects/kps-client" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+    style={{backgroundColor: '#0177B5'}}
+  >
+    <span className="text-white">in</span> <span className="text-white">LinkedIn</span>
+  </a>
+</div>
+

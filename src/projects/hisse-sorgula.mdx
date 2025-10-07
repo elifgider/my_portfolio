@@ -1,0 +1,82 @@
+export const metadata = {
+  title: "Hisse Sorgula",
+  description:
+    "HTML, CSS ve JavaScript kullanılarak geliştirilen, hisse senetleri ve katılım endekslerini sorgulama ve takip etme aracı.",
+  date: "2025-09-25T09:00:00Z",
+  tags: ["HTML", "CSS", "JavaScript", "Frontend", "Web App"],
+  image: "/hissesorgula.png"
+}
+
+# 💹 Hisse Sorgula
+
+**Hisse Sorgula**, kullanıcıların Türkiye’deki hisse senetleri ve katılım endeksleri hakkında bilgi almasını sağlayan basit ama etkili bir web uygulamasıdır.  
+Tamamen **HTML, CSS ve saf JavaScript** kullanılarak geliştirilmiştir — hiçbir framework veya kütüphane kullanılmamıştır.
+
+---
+
+## 🎯 Amaç
+
+Bu projenin amacı, yatırımcıların karmaşık platformlara ihtiyaç duymadan, doğrudan tarayıcı üzerinden **hisse sorgulama, fiyat takibi** ve **favori ekleme** işlemlerini yapabilmesini sağlamaktır.  
+
+Kullanıcılar:
+- Hisse kodu veya adıyla arama yapabilir,  
+- Güncel verileri anında görebilir,  
+- Katılım endeksi şirketlerini inceleyebilir,  
+- Favori listeleriyle kendi izleme ekranını oluşturabilir.
+
+---
+
+## 🧱 Kullanılan Teknolojiler
+
+- **HTML5** → Yapılandırılmış, erişilebilir sayfa iskeleti  
+- **CSS3 (Flexbox & Grid)** → Duyarlı (responsive) tasarım  
+- **Vanilla JavaScript (ES6)** → Dinamik veri çekme, DOM güncelleme, localStorage yönetimi  
+- **REST API** → Hisse fiyatları ve endeks verilerini almak için  
+- **JSON Parsing** → API verilerini işlemek ve görüntülemek  
+
+---
+
+## ⚙️ Çalışma Mantığı
+
+1. Kullanıcı arama çubuğuna bir hisse kodu girer.  
+2. JavaScript, arka planda API’ye istek gönderir (`fetch()` kullanılarak).  
+3. Gelen veri JSON olarak çözülür ve DOM üzerinde tablo veya kart formatında gösterilir.  
+4. Favori butonuna tıklanarak hisse, **localStorage** içinde saklanır.  
+5. Sayfa yeniden açıldığında favori listesi otomatik olarak yüklenir.  
+
+---
+
+## 🎨 Arayüz Özellikleri
+
+- Mobil uyumlu (responsive) tasarım  
+- Açık ve sade renk paleti  
+- Hover animasyonları ve dinamik filtreleme  
+- Arama geçmişi kaydı  
+- “Favorilerim” sekmesi  
+
+---
+
+## 🧩 Örnek Kod Parçası
+
+```js
+const input = document.querySelector("#search");
+const results = document.querySelector("#results");
+
+input.addEventListener("input", async (e) => {
+  const query = e.target.value.trim();
+  if (!query) return;
+
+  const response = await fetch(`https://api.hissesorgula.com/search?q=${query}`);
+  const data = await response.json();
+
+  results.innerHTML = data
+    .map(
+      (item) => `
+      <div class="stock-card">
+        <h3>${item.name}</h3>
+        <p>Fiyat: ${item.price} ₺</p>
+        <p>Değişim: ${item.change}%</p>
+      </div>`
+    )
+    .join("");
+});

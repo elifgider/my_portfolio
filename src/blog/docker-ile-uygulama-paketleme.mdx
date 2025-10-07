@@ -1,0 +1,280 @@
+<div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 my-8 mb-9 shadow-sm">
+  <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-2">Docker ile Uygulama Paketleme</h1>
+  <p className="text-zinc-600 mb-4">Uygulamalarınızı Docker container'larına paketleyerek her ortamda tutarlı çalışmasını sağlayın.</p>
+  
+  <div className="text-sm text-zinc-600 space-y-1">
+    <div className="flex items-center gap-2">
+      <span className="font-medium">Elif Gider</span>
+      <span>—</span>
+      <span>3 Ekim 2025</span>
+    </div>
+    <div className="flex flex-wrap gap-2 mt-2">
+      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">#docker</span>
+      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">#container</span>
+      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium">#devops</span>
+      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">#deployment</span>
+      <span className="bg-pink-100 text-pink-800 px-2 py-1 rounded text-xs font-medium">#paketleme</span>
+    </div>
+  </div>
+</div>
+
+## Docker ile Uygulama Paketleme
+
+Docker, uygulamalarınızı ve bağımlılıklarınızı hafif, taşınabilir container'lara paketlemenizi sağlar. Bu sayede "bende çalışıyordu" sorununu ortadan kaldırır ve uygulamanızı her ortamda tutarlı şekilde çalıştırırsınız.
+
+---
+
+## 🎯 Docker Nedir? Günlük Hayattan Örnekler
+
+### 📦 **Container = Paketlenmiş Kutu**
+
+Düşünün ki bir arkadaşınıza yemek tarifi gönderiyorsunuz. Sadece tarifi değil, tüm malzemeleri de paketleyip gönderiyorsunuz:
+
+- ✅ **Tarif** (kodunuz)
+- ✅ **Malzemeler** (kütüphaneler, araçlar)
+- ✅ **Pişirme süresi** (çalışma ortamı)
+- ✅ **Sıcaklık** (sistem ayarları)
+
+Arkadaşınız paketi açtığında, aynen sizin yaptığınız gibi yemek yapabilir!
+
+### 🏠 **Image = Tarif Kitabı**
+
+Docker Image'ı, yemek tarifinizin yazılı olduğu kitap gibidir:
+- Herkes aynı kitabı kullanabilir
+- Kitap her yerde aynı sonucu verir
+- Yeni tarifler ekleyebilirsiniz
+
+### 🚚 **Container = Pişirilen Yemek**
+
+Container ise tarifi kullanarak pişirdiğiniz yemektir:
+- Tarif kitabından (Image) yapılır
+- Her seferinde aynı lezzette olur
+- İstediğiniz zaman yapabilirsiniz
+
+---
+
+## 🤔 Neden Docker Kullanmalıyız?
+
+### **"Bende Çalışıyordu" Sorunu**
+
+**Senaryo:** Arkadaşınızla aynı projeyi geliştiriyorsunuz.
+
+**Sorun:**
+- Sizde Node.js 18 var, arkadaşınızda 16
+- Sizde Windows var, arkadaşınızda Mac
+- Sizde farklı kütüphaneler yüklü
+
+**Sonuç:** "Bende çalışıyordu ama arkadaşımda çalışmıyor!"
+
+**Docker Çözümü:**
+- Her ikinizde de aynı container çalışır
+- Aynı Node.js versiyonu
+- Aynı kütüphaneler
+- Aynı sistem ayarları
+
+---
+
+## 🏢 Gerçek Hayat Örnekleri
+
+### **1. Web Sitesi Deployment**
+
+**Önceki Durum:**
+- Sunucuda Node.js kurulumu
+- Kütüphane versiyonları uyumsuzluğu
+- "Production'da çalışmıyor" sorunları
+
+**Docker ile:**
+- Container'ı her yere taşıyabilirsiniz
+- Aynı ortam her yerde
+- Hızlı ve güvenli deployment
+
+### **2. Ekip Çalışması**
+
+**Önceki Durum:**
+- Herkes farklı sistem kurulumu yapıyor
+- "Benim bilgisayarımda çalışıyor" durumları
+- Zaman kaybı
+
+**Docker ile:**
+- Tek komutla herkes aynı ortamı kuruyor
+- Tutarlı geliştirme ortamı
+- Hızlı onboarding
+
+### **3. Mikroservis Mimarisi**
+
+**Örnek:** E-ticaret sitesi
+- **Kullanıcı servisi** (Node.js)
+- **Ürün servisi** (Python)
+- **Ödeme servisi** (Java)
+- **Veritabanı** (PostgreSQL)
+
+Her servis ayrı container'da çalışır ve birbirleriyle konuşur.
+
+---
+
+## 🛠️ Temel Docker Kavramları
+
+### **Dockerfile = Tarif**
+
+```dockerfile
+# Hangi malzemeleri kullanacağız?
+FROM node:18
+
+# Nerede çalışacağız?
+WORKDIR /app
+
+# Hangi malzemeleri ekleyeceğiz?
+COPY package.json ./
+RUN npm install
+
+# Tarifi ekleyelim
+COPY . .
+
+# Hangi portta servis edeceğiz?
+EXPOSE 3000
+
+# Nasıl başlatacağız?
+CMD ["npm", "start"]
+```
+
+### **Image = Hazır Tarif Kitabı**
+
+```bash
+# Tarif kitabını oluştur
+docker build -t my-app .
+
+# Tarif kitabını listele
+docker images
+```
+
+### **Container = Pişirilen Yemek**
+
+```bash
+# Yemeği pişir (container başlat)
+docker run -p 3000:3000 my-app
+
+# Pişen yemekleri listele
+docker ps
+
+# Yemeği durdur
+docker stop container-id
+```
+
+---
+
+## 🚀 Pratik Örnek: Basit Web Uygulaması
+
+### **1. Basit Node.js Uygulaması**
+
+```javascript
+// app.js
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Merhaba Docker!');
+});
+
+app.listen(3000, () => {
+  console.log('Uygulama çalışıyor!');
+});
+```
+
+### **2. Dockerfile**
+
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "app.js"]
+```
+
+### **3. Çalıştırma**
+
+```bash
+# Image oluştur
+docker build -t merhaba-docker .
+
+# Container başlat
+docker run -p 3000:3000 merhaba-docker
+```
+
+Artık `http://localhost:3000` adresinde uygulamanız çalışıyor!
+
+---
+
+## 🎯 Docker'ın Avantajları
+
+### **1. Tutarlılık**
+- Geliştirme, test ve production aynı ortam
+- "Bende çalışıyordu" sorunu yok
+
+### **2. Taşınabilirlik**
+- Herhangi bir sunucuda çalışır
+- Cloud'a kolayca taşınabilir
+
+### **3. Ölçeklenebilirlik**
+- İhtiyaç duyduğunuzda container'ları çoğaltabilirsiniz
+- Yük dağıtımı kolay
+
+### **4. İzolasyon**
+- Her uygulama kendi ortamında çalışır
+- Birbirlerini etkilemez
+
+### **5. Hızlı Deployment**
+- Saniyeler içinde yeni sürüm yayınlayabilirsiniz
+- Rollback kolay
+
+---
+
+## 🎯 Sonuç
+
+Docker, uygulamalarınızı **paketleyip taşınabilir hale getiren** bir araçtır. Tıpkı yemek tarifini malzemeleriyle birlikte paketleyip göndermek gibi!
+
+**Temel Faydalar:**
+- ✅ **Tutarlılık:** Her yerde aynı çalışır
+- ✅ **Taşınabilirlik:** Kolayca taşınabilir
+- ✅ **Hız:** Hızlı kurulum ve deployment
+- ✅ **Güvenlik:** İzole ortamlar
+- ✅ **Ölçeklenebilirlik:** İhtiyaç duyduğunuzda büyüyebilir
+
+Docker öğrenmeye başlamak için basit bir web uygulaması ile başlayın. Zamanla daha karmaşık projelerde kullanmaya başlayacaksınız!
+
+---
+
+## 📱 Bu Yazıyı Paylaş
+
+Bu yazıyı beğendiyseniz, arkadaşlarınızla paylaşabilirsiniz:
+
+<div className="flex gap-3 justify-start my-8">
+  <a 
+    href="https://www.facebook.com/sharer/sharer.php?u=https://elifgider.dev/blog/docker-ile-uygulama-paketleme" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">f</span> <span className="text-white">Facebook</span>
+  </a>
+  
+  <a 
+    href="https://twitter.com/intent/tweet?url=https://elifgider.dev/blog/docker-ile-uygulama-paketleme&text=Docker ile Uygulama Paketleme" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+  >
+    <span className="text-white">𝕏</span> <span className="text-white">Twitter</span>
+  </a>
+  
+  <a 
+    href="https://www.linkedin.com/sharing/share-offsite/?url=https://elifgider.dev/blog/docker-ile-uygulama-paketleme" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium"
+    style={{backgroundColor: '#0177B5'}}
+  >
+    <span className="text-white">in</span> <span className="text-white">LinkedIn</span>
+  </a>
+</div>

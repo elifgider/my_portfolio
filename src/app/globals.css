@@ -1,5 +1,10 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
+/* Tailwind v4: içerik kaynakları */
+@source "./**/*.{js,jsx,ts,tsx,md,mdx}";
+
+/* Design tokens (Tailwind v4 @theme inline) */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,15 +17,17 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark mode değişkenleri (koyu arka plan, açık yazı) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ededed;
-    --foreground: #090909;
+    --background: #090909;
+    --foreground: #ededed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Temel gövde stili: Tailwind tokenlarıyla */
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
 }

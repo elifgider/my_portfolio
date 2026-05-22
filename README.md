@@ -53,7 +53,7 @@ Web siteme gitmek için <a href="https://www.elifgider.com.tr"><b>buraya</b></a>
 - MDX: Blog ve proje içeriklerini .mdx ile yazma
 - ESLint: Kod kalitesi ve stil denetimi
 - Node.js + npm: Geliştirme ve paket yönetimi
-- Vercel (opsiyonel): Dağıtım/hosting
+- Netlify (opsiyonel): Dağıtım/hosting
 
 
 ## Katkıda Bulunma
